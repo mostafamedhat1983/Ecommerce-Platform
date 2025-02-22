@@ -1,1 +1,103 @@
-# Ecommerce-Platform
+# 🚀 Docker Compose Configuration Explanation
+
+## 📝 Overview
+This `docker-compose.yml` file defines a multi-container setup for an e-commerce platform. It consists of three main services: `backend`, `frontend`, and `db` (MySQL database). It also defines networks and volumes for proper communication and data persistence.
+
+## 🏗️ Services
+
+### 1. 🔧 Backend Service
+```yaml
+backend:
+  image: mostafamedhat1/e-commerce-platform_backend
+  restart: unless-stopped
+  ports:
+    - "8080:8080"
+  networks:
+    - frontend
+    - backend
+  depends_on:
+    db:
+      condition: service_healthy
+```
+- **🖼️ Image**: Uses a pre-built backend image from Docker Hub.
+- **🔄 Restart Policy**: `unless-stopped` ensures the service restarts unless manually stopped.
+- **📡 Ports**: Maps port `8080` of the container to `8080` on the host.
+- **🔗 Networks**: Connects to both `frontend` and `backend` networks for communication.
+- **⏳ Depends On**: Ensures the `db` service is healthy before starting the backend.
+
+### 2. 🎨 Frontend Service
+```yaml
+frontend:
+  image: mostafamedhat1/e-commerce-platform_frontend
+  restart: unless-stopped
+  ports:
+    - "5174:5174"
+  depends_on:
+    - backend
+  networks:
+    - frontend
+```
+- **🖼️ Image**: Uses a pre-built frontend image from Docker Hub.
+- **🔄 Restart Policy**: `unless-stopped` ensures the service restarts unless manually stopped.
+- **📡 Ports**: Maps port `5174` of the container to `5174` on the host.
+- **⏳ Depends On**: Ensures the `backend` service starts before the frontend.
+- **🔗 Network**: Connects to the `frontend` network.
+
+### 3. 🗄️ Database (MySQL) Service
+```yaml
+db:
+  image: mysql:8.0
+  container_name: mysql_db
+  restart: unless-stopped
+  environment:
+    MYSQL_ROOT_PASSWORD: my-secret-pw
+    MYSQL_DATABASE: my_database
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+  ports:
+    - "3306:3306"
+  volumes:
+    - mysql_data:/var/lib/mysql
+  networks:
+    backend:
+      aliases:
+        - mysql
+  healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    interval: 10s
+    timeout: 5s
+    retries: 10
+```
+- **🖼️ Image**: Uses the official MySQL 8.0 image.
+- **📦 Container Name**: Named `mysql_db` for easier reference.
+- **🔄 Restart Policy**: `unless-stopped` ensures the service restarts unless manually stopped.
+- **🔑 Environment Variables**: Sets up MySQL root password, database name, and user credentials.
+- **📡 Ports**: Exposes MySQL on port `3306`.
+- **💾 Volumes**: Uses `mysql_data` for persistent storage of database files.
+- **🔗 Networks**: Connects to the `backend` network with the alias `mysql`.
+- **✅ Healthcheck**: Verifies the database is running before allowing dependent services to start.
+
+## 💾 Volumes
+```yaml
+volumes:
+  mysql_data:
+```
+- Defines a named volume `mysql_data` to persist MySQL data across container restarts.
+
+## 🌐 Networks
+```yaml
+networks:
+  frontend:
+  backend:
+```
+- **🌍 frontend**: Connects the `frontend` and `backend` services.
+- **🔌 backend**: Connects the `backend` and `db` services.
+
+## 📌 Summary
+- ✅ The backend depends on the database and will only start once the database is healthy.
+- ✅ The frontend depends on the backend to ensure proper sequencing.
+- ✅ The database service is set up with persistent storage and a health check to improve reliability.
+- ✅ Separate networks are used to organize communication between services.
+
+This setup ensures **modularity**, **scalability**, and **maintainability** for the e-commerce platform. 🚀
+
