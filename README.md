@@ -92,6 +92,17 @@ networks:
 ```
 - **🌍 frontend**: Connects the `frontend` and `backend` services.
 - **🔌 backend**: Connects the `backend` and `db` services.
+  
+## 🖼️ Screenshots
+
+![e](https://github.com/user-attachments/assets/d34ed9d0-172b-4de4-ae1e-22a929b9a8d6)
+
+![e2](https://github.com/user-attachments/assets/2e0e1542-8040-4feb-9a5f-0cd4e1443664)
+
+After login
+
+![login](https://github.com/user-attachments/assets/e0e52fb7-8a28-49df-acfd-a24d1736da3f)
+
 
 ## 📌 Summary
 - ✅ The backend depends on the database and will only start once the database is healthy.
