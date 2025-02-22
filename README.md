@@ -111,6 +111,61 @@ db:
 - **🔗 Networks**: Connects to the `backend` network with the alias `mysql`.
 - **✅ Healthcheck**: Verifies the database is running before allowing dependent services to start.
 
+### 📜 Node.js Dockerfile Explanation
+This `Dockerfile` sets up a Node.js environment for running a frontend application.
+
+### 🏗️ Step 1: Use an Official Node.js Image
+```dockerfile
+FROM node:18
+```
+- **🛠️ Base Image**: Uses Node.js version 18 as the parent image.
+
+### 📂 Step 2: Set Up Working Directory
+```dockerfile
+WORKDIR /app
+```
+- **📁 Working Directory**: Sets `/app` as the main directory inside the container.
+
+### 📄 Step 3: Copy Package Files
+```dockerfile
+COPY package*.json ./
+```
+- **📜 Copy Dependencies**: Copies `package.json` and `package-lock.json` (or `yarn.lock`) to the container.
+
+### 📦 Step 4: Install Dependencies
+```dockerfile
+RUN npm install
+```
+- **📦 Install Dependencies**: Runs `npm install` to install all required packages.
+
+### 📝 Step 5: Copy Application Code
+```dockerfile
+COPY . .
+```
+- **📂 Copy Source Code**: Copies all application files to the container.
+
+### 🔧 Step 6: Build the Application
+```dockerfile
+RUN npm run build
+```
+- **⚙️ Build Process**: Runs the build command to prepare the application for production.
+
+### 🌍 Step 7: Expose Application Port
+```dockerfile
+EXPOSE 5174
+```
+- **🚪 Open Port**: Exposes port `5174` for the application.
+
+### 🚀 Step 8: Run the Application
+```dockerfile
+CMD ["npm", "run", "dev"]
+```
+- **🎯 Start Command**: Runs the development server using `npm run dev`.
+
+This setup ensures an optimized and efficient Node.js container for development and deployment. 🚀
+
+
+
 ## 💾 Volumes
 ```yaml
 volumes:
