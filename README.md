@@ -77,40 +77,6 @@ frontend:
 - **⏳ Depends On**: Ensures the `backend` service starts before the frontend.
 - **🔗 Network**: Connects to the `frontend` network.
 
-### 3. 🗄️ Database (MySQL) Service
-```yaml
-db:
-  image: mysql:8.0
-  container_name: mysql_db
-  restart: unless-stopped
-  environment:
-    MYSQL_ROOT_PASSWORD: my-secret-pw
-    MYSQL_DATABASE: my_database
-    MYSQL_USER: test
-    MYSQL_PASSWORD: test
-  ports:
-    - "3306:3306"
-  volumes:
-    - mysql_data:/var/lib/mysql
-  networks:
-    backend:
-      aliases:
-        - mysql
-  healthcheck:
-    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-    interval: 10s
-    timeout: 5s
-    retries: 10
-```
-- **🖼️ Image**: Uses the official MySQL 8.0 image.
-- **📦 Container Name**: Named `mysql_db` for easier reference.
-- **🔄 Restart Policy**: `unless-stopped` ensures the service restarts unless manually stopped.
-- **🔑 Environment Variables**: Sets up MySQL root password, database name, and user credentials.
-- **📡 Ports**: Exposes MySQL on port `3306`.
-- **💾 Volumes**: Uses `mysql_data` for persistent storage of database files.
-- **🔗 Networks**: Connects to the `backend` network with the alias `mysql`.
-- **✅ Healthcheck**: Verifies the database is running before allowing dependent services to start.
-
 ### 📜 Node.js Dockerfile Explanation
 This `Dockerfile` sets up a Node.js environment for running a frontend application.
 
@@ -164,7 +130,39 @@ CMD ["npm", "run", "dev"]
 
 This setup ensures an optimized and efficient Node.js container for development and deployment. 🚀
 
-
+### 3. 🗄️ Database (MySQL) Service
+```yaml
+db:
+  image: mysql:8.0
+  container_name: mysql_db
+  restart: unless-stopped
+  environment:
+    MYSQL_ROOT_PASSWORD: my-secret-pw
+    MYSQL_DATABASE: my_database
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+  ports:
+    - "3306:3306"
+  volumes:
+    - mysql_data:/var/lib/mysql
+  networks:
+    backend:
+      aliases:
+        - mysql
+  healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    interval: 10s
+    timeout: 5s
+    retries: 10
+```
+- **🖼️ Image**: Uses the official MySQL 8.0 image.
+- **📦 Container Name**: Named `mysql_db` for easier reference.
+- **🔄 Restart Policy**: `unless-stopped` ensures the service restarts unless manually stopped.
+- **🔑 Environment Variables**: Sets up MySQL root password, database name, and user credentials.
+- **📡 Ports**: Exposes MySQL on port `3306`.
+- **💾 Volumes**: Uses `mysql_data` for persistent storage of database files.
+- **🔗 Networks**: Connects to the `backend` network with the alias `mysql`.
+- **✅ Healthcheck**: Verifies the database is running before allowing dependent services to start.
 
 ## 💾 Volumes
 ```yaml
