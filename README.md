@@ -103,6 +103,10 @@ After login
 
 ![login](https://github.com/user-attachments/assets/e0e52fb7-8a28-49df-acfd-a24d1736da3f)
 
+Items in shopping cart
+
+![cart](https://github.com/user-attachments/assets/9894e695-3969-4c68-a0b7-a8508ca55bda)
+
 
 ## 📌 Summary
 - ✅ The backend depends on the database and will only start once the database is healthy.
