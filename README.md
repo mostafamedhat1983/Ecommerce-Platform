@@ -25,6 +25,40 @@ backend:
 - **🔗 Networks**: Connects to both `frontend` and `backend` networks for communication.
 - **⏳ Depends On**: Ensures the `db` service is healthy before starting the backend.
 
+### 📜 Dockerfile Explanation
+This `Dockerfile` defines a two-stage build process for the backend Java application.
+
+### 🏗️ Step 1: Build the JAR using Maven
+```dockerfile
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean install -DskipTests
+```
+- **🛠️ Base Image**: Uses Maven 3.9.6 with Eclipse Temurin 17 as the build environment.
+- **📂 Working Directory**: Sets `/app` as the working directory.
+- **📄 Copy Files**: Copies `pom.xml` and `src` folder to the container.
+- **⚙️ Build Command**: Runs `mvn clean install -DskipTests` to compile the project and create a JAR file.
+
+### 🚀 Step 2: Run the Application Using Java
+```dockerfile
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/shop-0.0.1-SNAPSHOT.jar .
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "shop-0.0.1-SNAPSHOT.jar"]
+```
+- **🔧 Base Image**: Uses a lightweight Java 17 runtime (JRE) for running the application.
+- **📂 Working Directory**: Sets `/app` as the working directory.
+- **📄 Copy JAR**: Copies the built JAR file from the first stage.
+- **🌍 Expose Port**: Opens port `8080` for the application.
+- **🚀 Entry Point**: Runs the JAR using `java -jar`.
+
+This multi-stage build ensures the final image is lightweight and optimized for production. 🏆
+
+ 
+
 ### 2. 🎨 Frontend Service
 ```yaml
 frontend:
